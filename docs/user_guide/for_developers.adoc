@@ -1,0 +1,86 @@
+[#customize_db]
+=== How to customize the database
+- `src\backend\truck-berth-app\src\modules\simulated_db\truck_berth_db_controller.py` File that contains the Database operations.
+
+- Available Database operations are
++
+[cols="1,1"]
+|===
+| Wrapper API
+| Description
+
+|`insert_one(table_name, data)`
+|To insert a single row to the given table
+
+|`insert_many(table_name, data)`
+|To bulk insert
+
+|`delete_all(table_name, _filter)`
+|Delete multiple records based on a condition
+
+|`get_data()`
+|Get multiple records as list
+
+| `get_one_data()`
+|Get a single record
+
+|`update_one()`
+|Update a single record
+
+|===
+
+- Use the `__init__` constructor to initialize the database client.
++
+[source, python]
+----
+...
+def __init__(self):
+    #mongo_client = MongoClient(os.getenv("MONGO_DB_URI"))
+    #self._db = mongo_client["truckberthapp"]
+
+    # Initialize your database client here
+    pass
+...
+----
+- Assume if you want to use MySql database, the wrapper APIs should be modified according to the requirements.
++
+[source, python]
+----
+...
+def insert_one(self, table_name: TruckBerthDB, data):
+    """Method to insert one object"""
+    # Existing code uses MongoDB API
+    #self._db[table_name.value].insert_one(data)
+
+    # Sample:
+    # Customize the API call accordingly
+    self._db.insert(table_name, data)
+
+def get_data(self, table_name: TruckBerthDB, _filter):
+    """Method to find objects"""
+    # Existing code uses MongoDB API
+    #return self._db[table_name.value].find(_filter)
+
+    # Sample:
+    # Customize the API call accordingly
+    return self._db.get(table_name, _filter)
+...
+----
+- If you wish to modify the input to the wrapper, make sure to find and replace the call method all over the backend service.
+
+
+=== Reading Logs.
+** The Log file is generated for Flask app and Celery in the below mentioned format.
++
+`[Date Time] - [Log Level] - [Service Name] - [Message]`
++
+. Date Time: Current date time when log was triggered.
+. Log Level: Log levels like `INFO`, `WARNING` and `ERROR` are logged.
+. Service Name: Name of the service like Celery or APP is logged.
+. Message: Log message 
+
+- Flask app log file will be stored under the root folder with file name as `app.log`.
+- Celery log file will be stored under the root folder with file name as `model_inference.log`.
+
+=== Additional notes
+In future, there could be a provision for the users to store the inference images and meta data on a customized cloud environment.

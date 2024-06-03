@@ -1,0 +1,41 @@
+include "utils.fbs";
+
+namespace SmartCamera;
+
+table PlatePoint {
+  point_score: float;
+  point: Point2d;
+}
+
+table CarLicensePlatePoints {
+  score: float;
+  point_list: [PlatePoint];
+}
+
+table PlateTextResult {
+  prefecture: string;
+  classification_number: string;
+  hiragana: string;
+  plate_number: string;
+}
+
+table CarLicensePlate {
+  bounding_box: BoundingBox;
+  bounding_box_score: float;
+  plate_points: CarLicensePlatePoints;
+  plate_text: PlateTextResult;
+  plate_text_score: float;
+}
+
+table CarObject {
+  bounding_box: BoundingBox;
+  bounding_box_score: float;
+  license_plate: CarLicensePlate; 
+}
+
+table SlotResult {
+  camera_id:uint;
+  timestamp:ulong;
+  is_vacancy: bool;
+  car: CarObject;
+}

@@ -1,0 +1,30 @@
+- Start application in your local using chrome browser. Please see - xref:setup_and_installations.adoc#installation-guide[Installation and setup]
++
+image::ui_imgs/main_ui.png[UI Image]
+
+- UI Displays date and time in x-axis and Berth name with Reservation, Actual data in y-axis, Notification List of Truck status and Color code which is used to display different status.
++
+image::ui_imgs/ui_description.png[UI Image]
+
+<<<
+
+- Block colors based on scenarios
++
+image::ui_imgs/scenarios.png[Scenarios]
+
+
+- If there is Matching of Reserved truck number with Actual data for a given time and slot then the berth slots are highlighted to Green color and also the Truck entered and exit status is notified.
++
+image::ui_imgs/matching_trucks.png[Matching Image]
+
+<<<
+
+- If there is Non-Matching of Reserved truck number with Actual data for a given time and berth slot then the slots are highlighted to Red color and also the Truck entered and exit status is notified.
++
+image::ui_imgs/non_matching.jpg[Non-matching Image]
+
+- On mouse over for any slot the tool tip is displayed with its content at the top of the graph.
++
+image::ui_imgs/tooltip.png[Tool Tip Image]
+
+- UI will refresh for Truck Berth status and latest notification periodically in particular period of time.

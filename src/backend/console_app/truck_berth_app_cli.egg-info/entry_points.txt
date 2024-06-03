@@ -1,0 +1,2 @@
+[console_scripts]
+truck-berth-app = truck_berth_app.truck_berth_app:truck_berth_main

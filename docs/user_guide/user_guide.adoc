@@ -1,0 +1,47 @@
+= Truck Berth DB Application
+:organization: Sony
+:encoding: utf-8
+:lang: en
+:sectnums:
+:chapter-label:
+Sony; SISC; SARD;
+:toc:
+:toclevels: 2
+:toc-title: Table of Contents
+// :title-logo-image: sony_logo.png
+
+== About this Software
+This is a sample of "**Truck Berth DB Application**". Please note the following when using it：
+
+* This sample is released with the assumption it will be used for development.
+* This sample may contain errors or defects that obstruct regular operation of the device.
+* "**Truck Berth DB Application**" consists of an AI model, Edge App, "**AITRIOS Console**" and MongoDB.
+* The User Guide describes how to develop and set up these components and start application.
+* All the services in this application are tested and supposed to run on a single windows 10 environment. 
+
+== Overview
+"**Truck Berth DB Application**" helps in monitoring Truck Berth in Parking lots with the help of IMX500 Edge Device. Application uses ReactJS as the frontend and Flask, Celery as the backend. In Web UI, clearly shows the status of the berth allotment. For an in-depth view of the system, please see <<software-design>> for more information.
+
+<<<
+
+[#software-design]
+== Software Design
+include::software_design.adoc[]
+
+<<<
+
+[[installation-guide]]
+== Installation and Setup
+_**Note:**_ "**Truck Berth DB application**" consist of `MongoDB`, `Frontend`(GUI) and `Backend`(`flask server`, `celery-beat` and `celery-worker`). All the services in this application are tested and supposed to run on a single windows 10 environment.
+
+include::setup_and_installations.adoc[]
+
+<<<
+
+== Using UI Truck Berth Status Monitoring Application
+include::ui_guide.adoc[]
+
+<<<
+
+== For Developers
+include::for_developers.adoc[]

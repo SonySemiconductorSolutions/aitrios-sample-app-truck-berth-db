@@ -1,0 +1,19 @@
+include "slot_result.fbs";
+include "image.fbs";
+
+namespace SmartCamera;
+
+enum PerceptionResultType : byte {
+  Unknown,
+  Detection,
+  Recognition,
+  DetAndRec,
+}
+
+table PerceptionResult {
+  image: Image;
+  type: PerceptionResultType; 
+  slot_list:[SlotResult];
+}
+
+root_type PerceptionResult;
