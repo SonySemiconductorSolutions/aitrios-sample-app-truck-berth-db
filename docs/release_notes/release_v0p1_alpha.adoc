@@ -1,0 +1,68 @@
+=== Release v0.1-alpha
+
+This release notes lay out the details of the “v0.1-alpha Release” for Truck Berth DB application
+Following artifacts are provided as part of this release:
+
+. Source Code pushed to 
+
+* Github repo : https://github.com/SonySemiconductorSolutions/aitrios-sample-app-truck-berth-db-python-dev
+* Release tag : https://github.com/SonySemiconductorSolutions/aitrios-sample-app-truck-berth-db-python-dev/releases/tag/v0.1-alpha[v0.1-alpha]
+
+. Release package (20231129_truck_berth_status_monitoring_v0p1_alpha.zip) containing the following:
+
+.. truck_berth_status_monitoring_v0p1_alpha.zip
+.. truck_berth_status_monitoring_release_notes_v0p1_alpha.pdf
+.. truck_berth_status_monitoring_user_guide_v0p1_alpha.pdf
+
+==== Bug Fixes and Code changes
+
+* Nil
+
+==== Features List
+
+// tag::features_vrc_1p0p0[]
+
+===== Features supported in this release
+
+* Initial Draft version of Truck Berth DB application
+// end::features_vrc_1p0p0[]
+
+===== Limitations and Known Issues
+
+* Nil
+
+==== JIRA Tickets
+
+[cols="1,1"]
+|===
+| Ticket #  | Description
+
+|https://www.tool.sony.biz/common-jira/browse/SSRD-3104[SSRD-3104]
+|Get berth Status API
+
+|https://www.tool.sony.biz/common-jira/browse/SSRD-3110[SSRD-3110]
+|Event chart integration
+
+|https://www.tool.sony.biz/common-jira/browse/SSRD-3101[SSRD-3101]
+|API to import reservation data to mongoDB.
+
+|https://www.tool.sony.biz/common-jira/browse/SSRD-3115[SSRD-3115]
+|Deploying the OCR model to Edge Device.
+
+|https://www.tool.sony.biz/common-jira/browse/SSRD-3124[SSRD-3124]
+|Inference APIs
+
+|https://www.tool.sony.biz/common-jira/browse/SSRD-3135[SSRD-3135]
+|Implementation of CLI command to export data
+
+|https://www.tool.sony.biz/common-jira/browse/SSRD-3138[SSRD-3138]
+|Documentation
+
+|===
+// tag::links_vrc_1p0p0[]
+
+==== Source Code
+
+https://github.com/SonySemiconductorSolutions/aitrios-sample-app-truck-berth-db-python-dev/releases/tag/v0.1-alpha[Truck_Berth_Status-v0.1-alpha]
+
+// end::links_vrc_1p0p0[]

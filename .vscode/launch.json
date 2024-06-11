@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Flask app",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/backend/truck-berth-app/src/app.py",
+            "envFile": "${workspaceFolder}/src/backend/truck-berth-app/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Celery task",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/backend/truck-berth-app/src/tasks.py",
+            "envFile": "${workspaceFolder}/src/backend/truck-berth-app/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}

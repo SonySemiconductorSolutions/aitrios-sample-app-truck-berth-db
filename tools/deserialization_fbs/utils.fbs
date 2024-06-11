@@ -1,0 +1,21 @@
+namespace SmartCamera;
+
+union Point {
+  Point2d
+}
+
+table Point2d {
+  x:float;
+  y:float;
+}
+
+union BoundingBox {
+  BoundingBox2d,
+}
+
+table BoundingBox2d {
+  left:int;
+  top:int;
+  right:int;
+  bottom:int;
+}

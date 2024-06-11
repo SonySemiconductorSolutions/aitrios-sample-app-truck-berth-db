@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: truckappcli
+Version: 0.0.1+f398acf
+Summary: Truck Berth CLI
+Author: Sony Semiconductor Solutions Corporation
+Author-email: balaji.om@sony.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: Confidential :: Sony Semiconductor Solutions Corporation
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.6, <4

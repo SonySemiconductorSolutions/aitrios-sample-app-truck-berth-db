@@ -1,0 +1,47 @@
+=== Release v1.0.2-RC
+
+This release notes lay out the details of the “v1.0.2-RC Release” for Truck Berth DB application
+Following artifacts are provided as part of this release:
+
+. Source Code pushed to 
+
+* Github repo : https://github.com/SonySemiconductorSolutions/aitrios-sample-app-truck-berth-db-python-dev
+* Release tag : https://github.com/SonySemiconductorSolutions/aitrios-sample-app-truck-berth-db-python-dev/releases/tag/v1.0.2-RC[v1.0.2-RC]
+
+. Release package (20240223_truck_berth_status_monitoring_v1p0p2_rc.zip) containing the following:
+
+.. truck_berth_status_monitoring_v1p02_rc.zip
+.. truck_berth_status_monitoring_release_notes_v1p0p2_rc.pdf
+.. truck_berth_status_monitoring_user_guide_v1p0p2_rc.pdf
+
+==== Bug Fixes and Code changes
+
+* Fix requirements.txt
+
+==== Features List
+
+===== Features supported in this release
+
+* Feedback changes on user guide.
+
+===== Limitations and Known Issues
+
+* Nil
+
+==== JIRA Tickets
+
+[cols="1,1"]
+|===
+| Ticket #  | Description
+
+|https://www.tool.sony.biz/common-jira/browse/SSRD-3457[SSRD-3457]
+|[SC-SDK-Sample-Application-Development][Truck-Berth-DB] Feedback from SSS
+
+|===
+// tag::links_vrc_1p0p0[]
+
+==== Source Code
+
+https://github.com/SonySemiconductorSolutions/aitrios-sample-app-truck-berth-db-python-dev/releases/tag/v1.0.2-RC[Truck_Berth_Status-v1.0.2-RC]
+
+// end::links_vrc_1p0p0[]

@@ -1,0 +1,154 @@
+
+- AITROIS cloud application must have 3 functions such as 
+
+. Edge Device control
+. Cloud DB storage access and
+. Customers system access.
+
+- We design this sample application as same as the architecture for programmer's reference
+
+
+=== Software Architecture
+
+image::design_img\truck_berth_app_architecture.png[Software Architecture]
+The Software Architecture consists of IMX500 Edge Device, "**AITRIOS Console**" and "**Truck Berth DB app**".
+
+    - *IMX500 Edge Device*: Edge Device which is used to monitor the Truck in Parking lot. and also License Plate Detection (LPD) License Plate Recognition (LPR) Models are deployed for Truck Number Identification.
+    - *Console of AITRIOS*: Used to manage the Edge Device for deploying the LPD LPR model.
+    - *Backend*: Built using Flask with *MongoDB* which Provides API for Frontend to get the Truck Berth status.
+    - *Command Line Interface (CLI App)*: It is used to Import and export the Truck Reservation and actual data form MongoDB. And also to start inference and process the inferred data to store or update Truck Berth data in MongoDB.
+    - *Frontend*: Built using React with TypeScript, UI is only used to display the status of the Truck Berth and periodically updates the UI w.r.t the DB Updates via Rest API.
+
+=== Workflow Diagram
+
+image::design_img\truck_berth_setup_workflow.png[Workflow Diagram]
+The workflow diagram shows the basic process how the "**Truck Berth DB application**" communicate with AITRIOS and Edge Device. The application running locally consist of `MongoDB`, `Frontend`(GUI) and `Backend`(`flask server`, `celery-beat` and `celery-worker`). The application triggers the Edge Device for inferences and get the metadata from AITRIOS to display Truck number in Frontend(GUI) via MongoDB. This detected Truck number is used by application backend to compare with reservation data. Thus displaying reservation and actual data in GUI.
+
+|===
+| Workflow no. | Description
+
+
+|1 | `flaskApp` calls the `AITRIOS` REST API to start the model inference by providing the device id.
+|2 | Request to `AITRIOS` Console to provide the latest inference data.
+|3 | `CeleryWorker` then stores the actual data in the database.
+|4 | The Actual and Reservation data will be read by the `Backend`.
+|5 | `ReactApp` requests for the Berth status.
+|6 | `flaskApp` handles the request and provides the data to the UI `ReactApp`.
+
+|===
+
+=== Database Schema (MongoDB)
+
+To simulate customers system that could be implemented by relational DB, we use MongoDB and define very simple DB access API for customer's reference. More info on xref:for_developers.adoc#customize_db[Customizing the database]
+
+* "**Truck Berth DB application**" uses MongoDB where it uses `truckberthapp` database.
+* `truckberthapp` has two collections which are `reservation_data` and `actual_data`.
+
+[#reservation-data]
+==== Reservation data
+`reservation_data` has below mentioned columns.
+
+. **email_id**: Truck Owner/Driver Email ID.
+. **start_time**: Truck reservation start time.
+. **end_time**: Truck reservation end time.
+. **berth_number**: Berth number of Truck parking lot.
+. **car_number**: Truck Registration Number.
+. **status**: By default use "reserved".
+
+_**Note:**_
+
+.. Please use Japanese "`・`" for dot character and only 4 digit numbers for Truck registration number in the car_number column.
+.. Use the dateformat as `dd-mm-yyyy HH:MM`
++
+Sample reservation data.
++
+image:ui_imgs\sample_reservation_data.png[]
+
+==== Actual data
+`actual_data` is generated from the application. It has below mentioned columns.
+
+. **berth_number**: Berth number of Truck parking lot.
+. **email_id**: Truck Owner/Driver Email ID.
+. **start_time**: Truck reservation start time.
+. **end_time**: Truck reservation end time.
+. **status**: Status of the Truck presence.
+. **car_number**: Truck Registration Number.
+. **arrival_notification**: Flag for arrival notification.
+. **depart_notification**: Flag for departure notification.
+. **reservation_id**: Reservation ID of the Reserved Truck in the Berth.
+. **is_email_notified**: Flag to send Email notification.
+
+=== Sequence Diagram
+
+"**Truck Berth DB application**" require to run 5 Terminals for 5 Services. Please find the below table for more information.
+
+|===
+| Terminal No | Service Name | Description
+
+| 1 | flaskApp | Backend REST API service
+| 2 | celeryWorker | Celery Worker service
+| 3 | celeryBeat | Celery Scheduler Service
+| 4 | cliApp | Command Line Interface application
+| 5 | ReactApp | "**Truck Berth Status Monitoring Application**"
+| - | MongoDB | MongoDB service
+| - | "**AITRIOS**" | "**AITRIOS Console**"
+|===
+. **Import the Reservation data**
++
+image::design_img\workflow\import_data.png[Import the Reservation data]
+CLI app calls the API to import the reservation data by pointing a CSV file. Once called the Flask App parses the csv file and stores in the database
+
+. **Get model inference**
++
+image::design_img\workflow\inference_flow.png[Get Model Inference]
+Celery beat schedules a task and the celery worker calls the AITRIOS API to get the latest model inference which further will be deserialized and stored in the database.
+
+. **User's dashboard**
++
+image::design_img\workflow\gui.png[User's dashboard]
+React App (GUI) requests the Flask app for the Berth status and the Flask app queries the database, process the records and provides the data as the response.
+
+. **Update Berth status**
++
+image::design_img\workflow\update_berth_status.png[Update Berth Status]
+Celery beat schedules a task and the celery worker begins to pull the actual data from the database and updates the status of each record to `"left"` if the end_time is more than the tolerance time.
+
+. **Export data**
++
+image::design_img\workflow\export_data.png[Export data]
+CLI app calls the API to export the data by specifying the output directory. Once called the Flask App pulls the record from the database and stores it in the given path.
+
+<<<
+
+=== Folder Structure
+[source, text]
+----
+├───docs
+│   ├───release_notes -> AsciiDoc files for Release note document.
+│   └───user_guide -> AsciiDoc files for User Guide document.
+└───src
+    ├───backend -> Backend Applications
+    │   ├───console_app
+    │   │   └───truck_berth_app -> `cliApp` Command Line Interface 
+    │   │                               for Truck Berth DB application
+    │   └───truck-berth-app -> `flaskApp` Backend 
+    │       │                       Flask Application for REST APIs 
+    │       └───src
+    │           ├───common
+    │           ├───data
+    │           ├───modules
+    │           │   ├───AITRIOS_console -> `AITRIOS` REST APIs
+    │           │   ├───cloudapp
+    │           │   │   └───SmartCamera
+    │           │   └───simulated_db -> `MongoDB` Interface.
+    │           ├───app.py
+    │           └───tasks.py -> `celeryWorker` logic
+    └───frontend -> `ReactApp` Frontend(GUI) Application in React
+        └───truck-berth-status-monitoring-app
+            └───src
+                ├───common
+                ├───components
+                ├───utils
+                ├───App.tsx
+                └───main.tsx
+----
