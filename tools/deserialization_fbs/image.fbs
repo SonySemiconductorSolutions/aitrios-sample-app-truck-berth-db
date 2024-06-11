@@ -1,0 +1,17 @@
+namespace SmartCamera;
+
+enum PixelFormat : byte {
+  BGR888,
+  GRAY8,
+  NV12
+}
+
+table Image {
+  data:[ubyte];
+  width:uint;
+  height:uint;
+  channel:uint;
+  pixel_format:PixelFormat;
+  camera_id:uint;
+  timestamp:ulong;
+}
