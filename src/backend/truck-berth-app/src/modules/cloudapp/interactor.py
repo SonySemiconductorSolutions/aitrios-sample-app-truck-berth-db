@@ -25,7 +25,7 @@ from io import StringIO
 import pandas as pd
 import pymongo
 from common.config import CLIENT_ID, CLIENT_SECRET, MAIL_NOTIFICATION
-from common.util import convert_to_schedule_format, get_group, is_time_between, notify_by_sendgrid
+from common.util import convert_to_schedule_format, get_group, is_time_between, notify_by_email
 from flask import Response
 from modules.AITRIOS_console.authentication import get_access_token
 from modules.AITRIOS_console.cloud_db_controller import CloudDBController
@@ -55,7 +55,6 @@ class Interactor:
         access_token = get_access_token(CLIENT_ID, CLIENT_SECRET)
         self.ed_device_obj = EdgeDeviceController(access_token)
 
-    # pylint:disable=too-many-locals
     def import_reservation_data(self, request):
         """
         Method to import reservation data
@@ -91,7 +90,7 @@ class Interactor:
                 _df["start_time"] = pd.to_datetime(_df["start_time"], dayfirst=True)
                 _df["end_time"] = pd.to_datetime(_df["end_time"], dayfirst=True)
 
-                # Insert the data into MongoDB
+                # Insert the data into FerretDB
                 data = _df.to_dict(orient="records")
                 self.logger.info("[DB][INSERT] Adding the reservation data")
                 self.db_obj.insert_many(TruckBerthDB.RESERVATION_DATA, data)
@@ -139,7 +138,6 @@ class Interactor:
         collection = TruckBerthDB.ACTUAL_DATA
         if export_type == "reservation":
             collection = TruckBerthDB.RESERVATION_DATA
-        # pylint:disable=abstract-class-instantiated
         self.logger.info("[DB][READ] Read the collection: %s", collection.value)
         # Query the collection
         cursor = self.db_obj.get_data(collection, {})
@@ -441,6 +439,7 @@ class Interactor:
         else:
             self.logger.info("Inference has been stopped by the user.")
 
+
     def _get_max_bb_score_index(self, slot_list):
         _bb = []
         for _sl in slot_list:
@@ -526,7 +525,7 @@ class Interactor:
         Method to find the reservation data for the given actual data
 
         Args:
-            r_collection (mongodb collection): Mongodb collection object
+            r_collection (ferretdb collection): Ferretdb collection object
             actual_data (dict): Dictionary of actual data
         """
         start_time, end_time = self._get_start_end_time_for_today()
@@ -575,7 +574,7 @@ class Interactor:
                 ):
                     _msg = f"Truck number: [{actual_data_row['car_number']}]"
                     _msg = _msg + " has arrived without any reservation"
-                    notify_by_sendgrid(_msg)
+                    notify_by_email(_msg)
                     update_data = {"$set": {"is_email_notified": True}}
                     _query = {**query, "car_number": actual_data_row["car_number"]}
                     self.db_obj.update_one(TruckBerthDB.ACTUAL_DATA, update_data, _query)

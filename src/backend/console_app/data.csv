@@ -1,0 +1,5 @@
+email_id,start_time,end_time,berth_number,car_number,status
+aaa@xxx.com,05-08-2024 16:00,05-08-2024 17:00,B1,7645,reserved
+bbb@xxx.com,05-08-2024 18:00,05-08-2024 18:30,B1,7646,reserved
+ccc@xxx.com,05-08-2024 13:00,05-08-2024 14:00,B1,8111,reserved
+ddd@xxx.com,05-08-2024 08:00,05-08-2024 12:00,B1,9111,reserved

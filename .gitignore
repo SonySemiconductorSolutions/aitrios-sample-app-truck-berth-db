@@ -1,9 +1,10 @@
 .env
 *.pyc
-src/backend/console_app/truckappcli.egg-info/*
+src/backend/console_app/truck_berth_app_cli.egg-info/
+src/backend/console_app/truckappcli.egg-info/
 src/backend/console_app/truckberthapp.log
-src/backend/console_app/build
-dependencies/*
+src/backend/console_app/build/
+dependencies/
 *.log
 *.log.*
 *celerybeat*
@@ -11,5 +12,4 @@ dependencies/*
 *.yaml
 *.pdf
 *.ipynb
-dependencies/*
 tools/

@@ -16,7 +16,6 @@
 """
 File: tasks.py
 """
-# pylint:disable=no-name-in-module
 import logging
 import os
 
@@ -25,7 +24,7 @@ from celery.signals import after_setup_logger
 from modules.cloudapp.interactor import Interactor
 from modules.simulated_db.truck_berth_db_controller import TruckBerthDbController
 
-celery = Celery("tasks", broker=os.getenv("REDIS_URL"))
+celery = Celery("tasks", broker=os.getenv("RABBIT_MQ_URL"), backend=os.getenv("FERRET_DB_RESULTS_URI"))
 
 BERTH_MAP_JSON_FILE = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "data", "berth_device_map.json"
@@ -37,7 +36,6 @@ truck_berth_db = TruckBerthDbController()
 interactor = Interactor(_logger)
 
 
-# pylint:disable=unused-argument
 @after_setup_logger.connect
 def setup_loggers(logger, **kwargs):
     """
@@ -72,3 +70,4 @@ def update_truck_status(berth_number):
 
 if __name__ == "__main__":
     update_truck_status("B1")
+    update_truck_status("B2")

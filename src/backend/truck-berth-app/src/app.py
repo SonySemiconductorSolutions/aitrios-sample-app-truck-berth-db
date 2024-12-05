@@ -19,7 +19,6 @@ File: src/truck-berth-app/src/app.py
 import logging
 import os
 
-# pylint:disable=no-name-in-module
 from celery import Celery
 from common.logger import get_log_handler
 from common.util import get_beat_schedule_config
@@ -30,17 +29,17 @@ from modules.cloudapp.interactor import Interactor
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-# Configure the redis server
-app.config["CELERY_BROKER_URL"] = os.getenv("REDIS_URL")
-app.config["result_backend"] = os.getenv("REDIS_URL")
+# Configure the Celery broker and result backend
+app.config["CELERY_BROKER_URL"] = os.getenv("RABBIT_MQ_URL")
+app.config["result_backend"] = os.getenv("FERRET_DB_RESULTS_URI")
 
 # creates a Celery object
 celery = Celery(app.name, broker=app.config["CELERY_BROKER_URL"])
 celery.conf.update(app.config)
 celery.conf.update(include=["tasks"])
 
-# Configure the MongoDB connection
-app.config["MONGO_URI"] = os.getenv("MONGO_DB_URI")
+# Configure the FerretDB connection
+app.config["FERRET_URI"] = os.getenv("FERRET_DB_URI")
 
 BERTH_MAP_JSON_FILE = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "data", "berth_device_map.json"
@@ -57,10 +56,10 @@ interactor = Interactor(app.logger)
 @app.route("/api/import/", methods=["GET", "POST"])
 def import_reservation_data():
     """
-    Route to import csv file to mongodb
+    Route to import csv file to ferretdb
 
     This route allows you to import the reservation csv data
-    and store it into mongodb.
+    and store it into ferretdb.
 
     :param file: CSV file containing reservation data information
     :type file: file
@@ -84,10 +83,10 @@ def import_reservation_data():
 @app.route("/api/export/", methods=["GET"])
 def export_data():
     """
-    Route to export csv file from mongodb
+    Route to export csv file from ferretdb
 
     This route allows you to import the reservation csv data
-    and store it into mongodb.
+    and store it into ferretdb.
 
     :return: CSV File
     :rtype: file
@@ -104,7 +103,6 @@ def export_data():
     return interactor.export_data(request)
 
 
-# pylint:disable=too-many-locals
 @app.route("/getberthstatus", methods=["GET"])
 def get_berth_status():
     """
@@ -125,7 +123,6 @@ def get_berth_status():
     return interactor.get_berth_status(request)
 
 
-# pylint:disable=too-many-branches
 @app.route("/getnotifications", methods=["GET"])
 def get_notifications():
     """

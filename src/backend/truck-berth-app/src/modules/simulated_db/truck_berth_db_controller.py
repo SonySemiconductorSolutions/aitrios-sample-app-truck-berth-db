@@ -28,7 +28,7 @@ warnings.filterwarnings("ignore")
 
 class TruckBerthDB(Enum):
     """
-    Mongodb collection name
+    Ferretdb collection name
     """
 
     ACTUAL_DATA = "actual_data"
@@ -41,8 +41,8 @@ class TruckBerthDbController:
     """
 
     def __init__(self):
-        mongo_client = MongoClient(os.getenv("MONGO_DB_URI"))
-        self._db = mongo_client["truckberthapp"]
+        ferret_client = MongoClient(os.getenv("FERRET_DB_URI"))
+        self._db = ferret_client["truckberthapp"]
 
     def insert_one(self, table_name: TruckBerthDB, data):
         """Method to insert one object"""
