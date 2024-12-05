@@ -21,7 +21,7 @@
 |`get_data()`
 |Get multiple records as list
 
-| `get_one_data()`
+|`get_one_data()`
 |Get a single record
 
 |`update_one()`
@@ -35,8 +35,8 @@
 ----
 ...
 def __init__(self):
-    #mongo_client = MongoClient(os.getenv("MONGO_DB_URI"))
-    #self._db = mongo_client["truckberthapp"]
+    #ferret_client = MongoClient(os.getenv("FERRET_DB_URI"))
+    #self._db = ferret_client["truckberthapp"]
 
     # Initialize your database client here
     pass
@@ -49,7 +49,6 @@ def __init__(self):
 ...
 def insert_one(self, table_name: TruckBerthDB, data):
     """Method to insert one object"""
-    # Existing code uses MongoDB API
     #self._db[table_name.value].insert_one(data)
 
     # Sample:
@@ -58,7 +57,6 @@ def insert_one(self, table_name: TruckBerthDB, data):
 
 def get_data(self, table_name: TruckBerthDB, _filter):
     """Method to find objects"""
-    # Existing code uses MongoDB API
     #return self._db[table_name.value].find(_filter)
 
     # Sample:
@@ -81,6 +79,98 @@ def get_data(self, table_name: TruckBerthDB, _filter):
 
 - Flask app log file will be stored under the root folder with file name as `app.log`.
 - Celery log file will be stored under the root folder with file name as `model_inference.log`.
+
+=== Sending email notification
+This sample app sends email notification to user's email configured in the `truck_berth_backend_settings.yaml` file only when there is no reservation available for a truck.
+
+To enable email notifications, you need to modify the following file:
+
+- requirements.txt
+- src\backend\truck-berth-app\src\common\config.py
+- src\backend\truck-berth-app\src\common\util.py
+- src\backend\truck-berth-app\src\data\truck_berth_backend_settings.yaml
+
+==== requirements.txt
+Add the sendgrid library to this file.
+[source, txt]
+----
+Flask==3.0.0
+Flask-PyMongo==2.3.0
+pandas==2.0.3
+python-dotenv==1.0.0
+celery==5.3.5
+redis==5.0.1
+Flask-Cors==4.0.0
+flatbuffers==23.5.26
+pyyaml==6.0.1
+requests==2.31.0
+sendgrid==6.11.0
+----
+
+==== src\backend\truck-berth-app\src\common\config.py
+Add the sendgrid KEY and ENDPOINT to this file.
+[source, python]
+----
+BASE_URL = config["console_endpoint"]
+ACCESS_TOKEN_URL = config["portal_authorization_endpoint"]
+CLIENT_ID = config["client_id"]
+CLIENT_SECRET = config["client_secret"]
+FROM_EMAIL = config["from_email"]
+EMAIL_SUBJECT = config["email_subject"]
+NOTIFIER_EMAIL_LIST = config["notifier_email_list"]
+MAIL_NOTIFICATION = config["mail_notification"]
+SENDGRID_API_KEY = config["sendgrid_api_key"]
+SENDGRID_API_ENDPOINT = config["sendgrid_api_endpoint"]
+----
+
+==== src\backend\truck-berth-app\src\common\util.py
+Modify the common.config and notify_by_email function.
+[source, python]
+----
+# src\backend\truck-berth-app\src\common\util.py
+
+from common.config import (
+    EMAIL_SUBJECT,
+    FROM_EMAIL,
+    NOTIFIER_EMAIL_LIST,
+    SENDGRID_API_KEY,
+    SENDGRID_API_ENDPOINT,
+)
+
+def notify_by_email(message):
+    """Send notification by E-mail.
+    Args:
+        message (str): Message to send
+    """
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + SENDGRID_API_KEY,
+    }
+    data = {
+        "personalizations": [{"to": [{"email": mail} for mail in NOTIFIER_EMAIL_LIST]}],
+        "from": {"email": FROM_EMAIL},
+        "subject": EMAIL_SUBJECT,
+        "content": [{"type": "text/plain", "value": message}],
+    }
+    _post_request(SENDGRID_API_ENDPOINT, headers=headers, data=data)
+----
+
+==== src\backend\truck-berth-app\src\data\truck_berth_backend_settings.yaml
+Set your API KEY and ENDPOINT to this file.
+[source, yaml]
+----
+truck_berth_backend_settings:
+    console_endpoint: "__console_endpoint__"
+    portal_authorization_endpoint: "__portal_authorization_endpoint__"
+    client_secret: "__client_secret__"
+    client_id: "__client_id__"
+    mail_notification: true # set as true to enable the mail notification
+    from_email: "__from_email__" # From email ID
+    email_subject: "__email_subject__" # Email's subject
+    notifier_email_list: ["__notifier_email_list__"] # Notifier email list comma separated
+    sendgrid_api_key: "__sendgrid_api_key__" # set your API key
+    sendgrid_api_endpoint: "__sendgrid_api_endpoint__" # Sample end point: https://api.sendgrid.com/v3/mail/send
+----
 
 === Additional notes
 In future, there could be a provision for the users to store the inference images and meta data on a customized cloud environment.

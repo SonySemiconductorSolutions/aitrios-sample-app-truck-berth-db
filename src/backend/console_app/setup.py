@@ -66,7 +66,7 @@ PACKAGE_NAME = "truck-berth-app-cli"
 PACKAGE_VERSION = get_version()
 COMMIT_ID = get_commit_id()
 AUTHOR_NAME = "Sony Semiconductor Solutions Corporation"
-AUTHOR_EMAIL = "balaji.om@sony.com"
+AUTHOR_EMAIL = "aaa@xxx.com"
 
 
 setup(

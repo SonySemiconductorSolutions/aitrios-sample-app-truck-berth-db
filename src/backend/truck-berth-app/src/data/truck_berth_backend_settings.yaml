@@ -4,8 +4,6 @@ truck_berth_backend_settings:
   client_secret: "__client_secret__"
   client_id: "__client_id__"
   mail_notification: false
-  sendgrid_api_key: "__sendgrid_api_key__"
-  sendgrid_api_endpoint: "__sendgrid_api_endpoint__"
   from_email: "__from_email__"
   email_subject: "__email_subject__"
   notifier_email_list: ["__notifier_email_list__"]

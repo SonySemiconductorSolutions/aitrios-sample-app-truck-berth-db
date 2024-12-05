@@ -1,74 +1,219 @@
-=== Model Deployment for Edge Device
+=== Model Deployment for Edge AI Device
 include::ai_model_setup.adoc[]
 
 === Backend Flask Application
     
     * Prerequisites
     ** Use Windows 10
-    ** Install `MongodDB` v7.0.5 for windows.
-        https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/#install-mongodb-community-edition
-    ** Install `Redis-x64-3.0.504.msi` from below link.
-        https://github.com/microsoftarchive/redis/releases/download/win-3.0.504/Redis-x64-3.0.504.msi
-+
-For Installation steps Refer https://kasunprageethdissanayake.medium.com/installing-redis-x64-3-2-100-on-windows-and-running-redis-server-94db3a98ae3d
+
     ** Install python >= 3.9
 
-    * Install `MongoDB`
-    ** Open https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/#install-mongodb-community-edition in Browser
-    
-    ** Click "**MongoDB Download Center**"
-+
-image:mongo_db_imgs\install\1.png[]
+    ** Install Git
 
-    ** Click [**Select package**]
-+
-image:mongo_db_imgs\install\2.png[]
+    ** Install `Go` from below link.
+        https://go.dev/doc/install
+    ** Install `PostgreSQL` from below link.
+        https://www.postgresql.org/download/
+    ** Install `FerretDB` v1.23.1 for windows.
+        https://github.com/FerretDB/FerretDB
+    ** Install `Erlang` from below link.
+        https://erlang.org/download/otp_versions_tree.html
+    ** Install `RabbitMQ` from below link.
+        https://www.rabbitmq.com/docs/install-windows#installer
 
-    ** Select latest version `7.0.5` and Click [**Download**]
-+
-image:mongo_db_imgs\install\3.png[]
+    * Install `Go`
+    ** Open https://go.dev/doc/install in Browser
 
-    ** Open Downloaded file and click [**Next**]
+    ** Click [**Download**]
 +
-image:mongo_db_imgs\install\4.png[]
+image:go_imgs\go_1.png[]
 
-    ** "**Accept the license agreement**" and Click [**Next**]
+    ** Click the installer for Windows
 +
-image:mongo_db_imgs\install\5.png[]
+image:go_imgs\go_2.png[]
 
-    ** Click [**Complete**]
+    ** Click [**Next**]
 +
-image:mongo_db_imgs\install\6.png[]
+image:go_imgs\go_3.png[]
 
-    ** Select "**Install MongoDB as Service**" and click [**Next**]
+    ** Click [**Next**]
 +
-image:mongo_db_imgs\install\7.png[]
+image:go_imgs\go_4.png[]
 
-    ** Select "**Install MongoDB Compass**" and Click [**Next**]
+    ** Click [**Next**]
 +
-image:mongo_db_imgs\install\8.png[]
+image:go_imgs\go_5.png[]
 
     ** Click [**Install**]
 +
-image:mongo_db_imgs\install\9.png[]
+image:go_imgs\go_6.png[]
 
-
-    * Setup Database
-    ** Open `MongoDB Compass` app on windows and click on [**connect**]
+    ** Click [**Finish**]
 +
-image:mongo_db_imgs\connect_mongo_db.PNG[]
+image:go_imgs\go_6.png[]
 
-    ** Click [**+**] to add new Database.
-+
-image:mongo_db_imgs\add_db.PNG[]
+    ** Add the `the directory where Go binaries are installed` (e.g. `C:\Program Files\Go\bin` and `C:\bin`) to the environment variable `PATH`.
 
-    **  In "**Create Database**" enter "**Database Name**" as `truckberthapp` and "**Collection Name**" as `reservation_data` and click [**Create Database**] button.
-+
-image:mongo_db_imgs\create_db.PNG[]
+    ** Open PowerShell as administrator
 
-     ** Click "**truckberthapp**" and confirm that `reservation_data` collection is created.
+    ** Create a Go build environment
 +
-image:mongo_db_imgs\db_complete.PNG[]
+[source,console]
+----
+# PowerShell
+$env:GOPATH="C:\Users\<YourUsername>\go"
+$env:GOROOT="C:\Go"
+$env:Path += ";$env:GOPATH\bin;$env:GOROOT\bin"
+----
+
+
+    * Install `PostgreSQL`
+    ** Open https://www.enterprisedb.com/downloads/postgres-postgresql-downloads in Browser
+
+    ** Click the button from any version of Windows
++
+image:postgre_sql_imgs\postgre_sql_1.png[]
+
+    ** Open Downloaded file and Click [**Next**]
++
+image:postgre_sql_imgs\postgre_sql_2.png[]
+
+    ** Click [**Next**]
++
+image:postgre_sql_imgs\postgre_sql_3.png[]
+
+    ** Click [**Next**]
++
+image:postgre_sql_imgs\postgre_sql_4.png[]
+
+    ** Click [**Next**]
++
+image:postgre_sql_imgs\postgre_sql_5.png[]
+
+    ** Enter your password and Click [**Next**]
++
+image:postgre_sql_imgs\postgre_sql_6.png[]
+
+    ** Click [**Next**]
++
+image:postgre_sql_imgs\postgre_sql_7.png[]
+
+    ** Click [**Next**]
++
+image:postgre_sql_imgs\postgre_sql_8.png[]
+
+    ** Click [**Next**]
++
+image:postgre_sql_imgs\postgre_sql_9.png[]
+
+    ** Click [**Next**]
++
+image:postgre_sql_imgs\postgre_sql_10.png[]
+
+    ** Click [**Finish**]
++
+image:postgre_sql_imgs\postgre_sql_11.png[]
+
+    ** Add `the directory where PostgreSQL binaries are installed` (e.g. `C:\Program Files\PostgreSQL\<version>\bin`) to the environment variable `PATH`.
+
+    ** Open PowerShell as administrator
+
+    ** Connect using ``PostgreSQL``'s psql command and create the database and user
++
+[source,console]
+----
+# PowerShell
+psql -U postgres
+CREATE DATABASE truckberthapp;
+CREATE USER <user_name> WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE truckberthapp TO <user_name>;
+----
+
+    * Install `FerretDB`
+    ** Official installation instructions can be found in FerretDB's GitHub repository (https://github.com/FerretDB/FerretDB).
+
+    ** Open PowerShell as administrator
++
+[source,console]
+----
+# PowerShell
+git clone https://github.com/FerretDB/FerretDB.git
+cd FerretDB
+go install github.com/go-task/task/v3/cmd/task@latest
+$env:Path += ";$env:GOPATH\bin"
+task gen-version
+go build -o ferretdb ./cmd/ferretdb
+.\ferretdb\ferretdb.exe --postgresql-url "postgres://<user_name>:'your_password'@localhost:5432/truckberthapp" --listen-addr 127.0.0.1:27017
+----
+
+    ** Open PowerShell as administrator
+
+    ** Create a `build/version/version.txt` file in the `FerretDB` directory and add content similar to the following:
++
+[source,console]
+----
+# txt
+v1.23.1
+----
+
+
+    * Install `Erlang`
+    ** Open https://erlang.org/download/otp_versions_tree.html in Browser
+
+    ** Click "**win64**" from any version
++
+image:erlang_imgs\erlang_1.png[]
+
+    ** Open Downloaded file and Click [**Next**]
++
+image:erlang_imgs\erlang_2.png[]
+
+    ** Click [**Next**]
++
+image:erlang_imgs\erlang_3.png[]
+
+    ** Click [**Install**]
++
+image:erlang_imgs\erlang_4.png[]
+
+    ** Click [**Close**]
++
+image:erlang_imgs\erlang_5.png[]
+
+    ** `the directory where PostgreSQL binaries are installed` (e.g. `C:\Program Files\Erlang OTP\bin`) to the environment variable `PATH`.
+
+    * Install `RabbitMQ`
+    ** Open https://www.rabbitmq.com/docs/install-windows#installer in Browser
+
+    ** Click "**.exe**" file 
++
+image:rabbit_mq_imgs\rabbit_mq_1.png[]
+
+    ** Open Downloaded file and Click [**Next**]
++
+image:rabbit_mq_imgs\rabbit_mq_2.png[]
+
+    ** Click [**Install**]
++
+image:rabbit_mq_imgs\rabbit_mq_3.png[]
+
+    ** Click [**Next**]
++
+image:rabbit_mq_imgs\rabbit_mq_4.png[]
+
+    ** Click [**Finish**]
++
+image:rabbit_mq_imgs\rabbit_mq_5.png[]
+
+    ** Add `the folder where RabbitMQ is installed\sbin` (e.g. `C:\Program Files\RabbitMQ Server\rabbitmq_server-3.13.6\sbin`) to the environment variable `PATH`.
+
+    ** Start RabbitMQ service
++
+[source,console]
+----
+# PowerShell
+net start RabbitMQ
+----
 
     * Setup environment
     ** Create a new virtual environment (Terminal 1)
@@ -80,7 +225,6 @@ python -m venv myenv
 .\myenv\Scripts\activate
 ----
 
-    ** Create a database `truckberthapp`.[[refer]]
     ** Install python dependencies
 +
 [source,console]
@@ -99,8 +243,6 @@ truck_berth_backend_settings:
     client_secret: "__client_secret__"
     client_id: "__client_id__"
     mail_notification: false
-    sendgrid_api_key: "__sendgrid_api_key__"
-    sendgrid_api_endpoint: "__sendgrid_api_endpoint__"
     from_email: "__from_email__"
     email_subject: "__email_subject__"
     notifier_email_list: ["__notifier_email_list__"]
@@ -123,14 +265,14 @@ truck_berth_backend_settings:
 [source,console]
 ----
 # Terminal 1
-set REDIS_URL=redis://localhost:6379/0
-set MONGO_DB_URI=mongodb://localhost:27017
+$env:RABBIT_MQ_URL="amqp://guest:guest@localhost:5672//"
+$env:FERRET_DB_URI="mongodb://localhost:27017/my_database"
+$env:FERRET_DB_RESULTS_URI="mongodb://localhost:27017/ferret_results"
 cd src\backend\truck-berth-app\src
 python app.py
 ----
 
 - _**Note:**_ 
-.. To use cloud Mongo DB, replace `MONGO_DB_URI` with cloud Mongo DB URI.
 .. The log files will be generated under the root folder as `app.log` file.
 
     ** Start the celery worker (Terminal 2)
@@ -140,8 +282,9 @@ python app.py
 # Terminal 2
 .\myenv\Scripts\activate
 cd src\backend\truck-berth-app\src
-set REDIS_URL=redis://localhost:6379/0
-set MONGO_DB_URI=mongodb://localhost:27017
+$env:RABBIT_MQ_URL="amqp://guest:guest@localhost:5672//"
+$env:FERRET_DB_URI="mongodb://localhost:27017/my_database"
+$env:FERRET_DB_RESULTS_URI="mongodb://localhost:27017/ferret_results"
 celery -A app.celery worker --pool=solo --loglevel=info
 ----
 +
@@ -154,8 +297,9 @@ _**Note:**_  The log files will be generated under the root folder as `model_inf
 # Terminal 3
 .\myenv\Scripts\activate
 cd src\backend\truck-berth-app\src
-set REDIS_URL=redis://localhost:6379/0
-set MONGO_DB_URI=mongodb://localhost:27017
+$env:RABBIT_MQ_URL="amqp://guest:guest@localhost:5672//"
+$env:FERRET_DB_URI="mongodb://localhost:27017/my_database"
+$env:FERRET_DB_RESULTS_URI="mongodb://localhost:27017/ferret_results"
 celery -A app.celery beat --loglevel=info
 ----
 
@@ -186,7 +330,7 @@ _**Note:**_ Make sure the backend service is started before you use the commands
 [source,console]
 ----
 # Terminal 4
-set TB_BACKEND_URL=http://localhost:5000
+$env:TB_BACKEND_URL = "http://localhost:5000"
 ----
 +
 _**Note:**_ By default, app will call `http://localhost:5000` if not set.
@@ -268,12 +412,12 @@ cd src\frontend\truck-berth-status-monitoring-app
 npm install
 ----
 
-    * Set the following environment params to your .env file
+    * Set the following environment
 +
 [source,console]
 ----
 # Terminal 5
-echo VITE_API_URL=http://127.0.0.1:5000>> .env
+$env:VITE_API_URL = "http://127.0.0.1:5000"
 ----
 
     * Run frontend UI "**Truck Berth Status Monitoring App**"
@@ -285,67 +429,9 @@ npm run dev
 ----
 _**Note:**_ Use Chrome browser to view UI "**Truck Berth Status Monitoring App**"
 
-=== Sending email notification
-This sample app sends email notification to user's email configured in the `truck_berth_backend_settings.yaml` file only when there is no reservation available for a truck.
-
-To enable the mail notification fill the information in the `truck_berth_backend_settings.yaml` file.
-
-[source, yaml]
-----
-truck_berth_backend_settings:
-    ...
-    mail_notification: true # set as true to enable the mail notification
-    sendgrid_api_key: "__sendgrid_api_key__" # set your API key
-    sendgrid_api_endpoint: "__sendgrid_api_endpoint__" # Sample end point: https://api.sendgrid.com/v3/mail/send
-    from_email: "__from_email__" # From email ID
-    email_subject: "__email_subject__" # Email's subject
-    notifier_email_list: ["__notifier_email_list__"] # Notifier email list comma separated
-----
-
-Source code to send the email
-
-[source, python]
-----
-# src\backend\truck-berth-app\src\common\util.py
-
-def notify_by_sendgrid(message):
-    """Send notification by SendGrid api.
-    Args:
-        message (str): Message to send
-    """
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + SENDGRID_API_KEY,
-    }
-    data = {
-        "personalizations": [{"to": [{"email": mail} for mail in NOTIFIER_EMAIL_LIST]}],
-        "from": {"email": FROM_EMAIL},
-        "subject": EMAIL_SUBJECT,
-        "content": [{"type": "text/plain", "value": message}],
-    }
-    _post_request(SENDGRID_API_ENDPOINT, headers=headers, data=data)
-----
-
-Method used here `src\backend\truck-berth-app\src\modules\cloudapp\interactor.py`
-
-[source, python]
-----
-if MAIL_NOTIFICATION:
-    # send email notification if the reservation is not made
-    if (
-        not actual_data_row["reservation_id"]
-        and not actual_data_row["is_email_notified"]
-    ):
-        _msg = f"Truck number: [{actual_data_row['car_number']}]"
-        _msg = _msg + " has arrived without any reservation"
-        notify_by_sendgrid(_msg) # Method call
-        update_data = {"$set": {"is_email_notified": True}}
-        _query = {**query, "car_number": actual_data_row["car_number"]}
-        self.db_obj.update_one(TruckBerthDB.ACTUAL_DATA, update_data, _query)
-----
 
 === Configure usage environment of FlatBuffers-compiler
-This sample application is designed for output from edge devices based on this data schema [tools/deserialization_fbs]
+This sample application is designed for output from Edge AI Devices based on this data schema [tools/deserialization_fbs]
 
 The version of FlatBuffers-compiler uses 23.1.21.
 
