@@ -24,8 +24,6 @@ from common.config import (
     EMAIL_SUBJECT,
     FROM_EMAIL,
     NOTIFIER_EMAIL_LIST,
-    SENDGRID_API_ENDPOINT,
-    SENDGRID_API_KEY,
 )
 
 
@@ -52,7 +50,6 @@ def convert_to_schedule_format(_in: dict, color_code: str, bg_color: str, group:
     if isinstance(_in["end_time"], datetime.datetime):
         temp["end"] = _in["end_time"].strftime("%Y-%m-%d %H:%M:%S")
     temp["content"] = str(_in["car_number"])
-    # pylint:disable=line-too-long
     temp[
         "style"
     ] = f"color: {color_code};\
@@ -80,7 +77,6 @@ def get_group(berth_number, is_actual_data):
     return berth_rows[0]
 
 
-# pylint:disable=chained-comparison
 def is_time_between(begin_time, end_time, check_time):
     """
     Check if the given check_time is between the start and end time
@@ -120,19 +116,10 @@ def _post_request(url, headers, data):
     return response
 
 
-def notify_by_sendgrid(message):
-    """Send notification by SendGrid api.
+def notify_by_email(message):
+    """Send notification by E-mail.
     Args:
         message (str): Message to send
     """
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + SENDGRID_API_KEY,
-    }
-    data = {
-        "personalizations": [{"to": [{"email": mail} for mail in NOTIFIER_EMAIL_LIST]}],
-        "from": {"email": FROM_EMAIL},
-        "subject": EMAIL_SUBJECT,
-        "content": [{"type": "text/plain", "value": message}],
-    }
-    _post_request(SENDGRID_API_ENDPOINT, headers=headers, data=data)
+    # send the E-mail.
+

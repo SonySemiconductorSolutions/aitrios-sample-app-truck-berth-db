@@ -1,7 +1,7 @@
 
 - AITROIS cloud application must have 3 functions such as 
 
-. Edge Device control
+. Edge AI Device control
 . Cloud DB storage access and
 . Customers system access.
 
@@ -11,18 +11,18 @@
 === Software Architecture
 
 image::design_img\truck_berth_app_architecture.png[Software Architecture]
-The Software Architecture consists of IMX500 Edge Device, "**AITRIOS Console**" and "**Truck Berth DB app**".
+The Software Architecture consists of IMX500 Edge AI Device, "**AITRIOS Console**" and "**Truck Berth DB app**".
 
-    - *IMX500 Edge Device*: Edge Device which is used to monitor the Truck in Parking lot. and also License Plate Detection (LPD) License Plate Recognition (LPR) Models are deployed for Truck Number Identification.
-    - *Console of AITRIOS*: Used to manage the Edge Device for deploying the LPD LPR model.
-    - *Backend*: Built using Flask with *MongoDB* which Provides API for Frontend to get the Truck Berth status.
-    - *Command Line Interface (CLI App)*: It is used to Import and export the Truck Reservation and actual data form MongoDB. And also to start inference and process the inferred data to store or update Truck Berth data in MongoDB.
+    - *IMX500 Edge AI Device*: Edge AI Device which is used to monitor the Truck in Parking lot. and also License Plate Detection (LPD) License Plate Recognition (LPR) Models are deployed for Truck Number Identification.
+    - *Console of AITRIOS*: Used to manage the Edge AI Device for deploying the LPD LPR model.
+    - *Backend*: Built using Flask with *FerretDB* which Provides API for Frontend to get the Truck Berth status.
+    - *Command Line Interface (CLI App)*: It is used to Import and export the Truck Reservation and actual data form FerretDB. And also to start inference and process the inferred data to store or update Truck Berth data in FerretDB.
     - *Frontend*: Built using React with TypeScript, UI is only used to display the status of the Truck Berth and periodically updates the UI w.r.t the DB Updates via Rest API.
 
 === Workflow Diagram
 
 image::design_img\truck_berth_setup_workflow.png[Workflow Diagram]
-The workflow diagram shows the basic process how the "**Truck Berth DB application**" communicate with AITRIOS and Edge Device. The application running locally consist of `MongoDB`, `Frontend`(GUI) and `Backend`(`flask server`, `celery-beat` and `celery-worker`). The application triggers the Edge Device for inferences and get the metadata from AITRIOS to display Truck number in Frontend(GUI) via MongoDB. This detected Truck number is used by application backend to compare with reservation data. Thus displaying reservation and actual data in GUI.
+The workflow diagram shows the basic process how the "**Truck Berth DB application**" communicate with AITRIOS and Edge AI Device. The application running locally consist of `FerretDB`, `Frontend`(GUI) and `Backend`(`flask server`, `celery-beat` and `celery-worker`). The application triggers the Edge AI Device for inferences and get the metadata from AITRIOS to display Truck number in Frontend(GUI) via FerretDB. This detected Truck number is used by application backend to compare with reservation data. Thus displaying reservation and actual data in GUI.
 
 |===
 | Workflow no. | Description
@@ -37,11 +37,11 @@ The workflow diagram shows the basic process how the "**Truck Berth DB applicati
 
 |===
 
-=== Database Schema (MongoDB)
+=== Database Schema (FerretDB)
 
-To simulate customers system that could be implemented by relational DB, we use MongoDB and define very simple DB access API for customer's reference. More info on xref:for_developers.adoc#customize_db[Customizing the database]
+To simulate customers system that could be implemented by relational DB, we use FerretDB and define very simple DB access API for customer's reference. More info on xref:for_developers.adoc#customize_db[Customizing the database]
 
-* "**Truck Berth DB application**" uses MongoDB where it uses `truckberthapp` database.
+* "**Truck Berth DB application**" uses FerretDB where it uses `truckberthapp` database.
 * `truckberthapp` has two collections which are `reservation_data` and `actual_data`.
 
 [#reservation-data]
@@ -90,7 +90,7 @@ image:ui_imgs\sample_reservation_data.png[]
 | 3 | celeryBeat | Celery Scheduler Service
 | 4 | cliApp | Command Line Interface application
 | 5 | ReactApp | "**Truck Berth Status Monitoring Application**"
-| - | MongoDB | MongoDB service
+| - | FerretDB | FerretDB service
 | - | "**AITRIOS**" | "**AITRIOS Console**"
 |===
 . **Import the Reservation data**
@@ -140,7 +140,7 @@ CLI app calls the API to export the data by specifying the output directory. Onc
     │           │   ├───AITRIOS_console -> `AITRIOS` REST APIs
     │           │   ├───cloudapp
     │           │   │   └───SmartCamera
-    │           │   └───simulated_db -> `MongoDB` Interface.
+    │           │   └───simulated_db -> `FerretDB` Interface.
     │           ├───app.py
     │           └───tasks.py -> `celeryWorker` logic
     └───frontend -> `ReactApp` Frontend(GUI) Application in React

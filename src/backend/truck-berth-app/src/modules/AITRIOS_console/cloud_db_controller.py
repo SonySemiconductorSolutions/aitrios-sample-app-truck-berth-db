@@ -24,7 +24,6 @@ from common.config import BASE_URL
 warnings.filterwarnings("ignore")
 
 
-# pylint:disable=too-few-public-methods
 class CloudDBController:
     """
     Class to implement cloud DB controller

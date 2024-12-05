@@ -2,11 +2,12 @@ _**Note:**_ Below steps for setup is only a sample and it may change in future.
 
 * Prerequisites
 +
-The following service and Edge Device are required to run this software.
+The following service and Edge AI Device are required to run this software.
 +
-.. Buy Console Developer Edition Basic Plan.
-.. Buy Edge Device.
-.. Buy Azure account and subscription.
+.. Buy Console Developer Edition Plan.
+.. Buy Edge AI Device.
+
+IMPORTANT: The AI model, Edge App and command parameter file can be obtained by contacting the SSS member (Logistics Team) via the following query: ["**Inquiry Form - Input**"](https://support.aitrios.sony-semicon.com/hc/en-us/requests/new)
 
 * Import LPD LPR model.
 
@@ -56,29 +57,29 @@ image::aitrios_imgs/deploy_model/step3.png[]
 * Import Edge App.
 .. Go to "**Settings**" from sidebar and select "**Application**" from the tab and click [**import**] 
 +
-image::aitrios_imgs/import_wasm/step1.png[]
+image::aitrios_imgs/import_edgeapp/step1.png[]
 
 .. "**Import Device App**" pop up appears, Upload the `Edge App file`, enter the "**Name**", "**Version**", "**Description**" and click [**Next**].
 +
-image::aitrios_imgs/import_wasm/step2.png[]
+image::aitrios_imgs/import_edgeapp/step2.png[]
 
 .. Click [**Create**]
 +
-image::aitrios_imgs/import_wasm/step3.png[]
+image::aitrios_imgs/import_edgeapp/step3.png[]
 
 .. Go to "**Deploy to Device**" from sidebar and select "**Application**" from the tab, Search for deployed Edge App file from the list and click on [**Deploy**].
 +
-image::aitrios_imgs/import_wasm/step4.png[]
+image::aitrios_imgs/import_edgeapp/step4.png[]
 
 
 * Deploy Edge App to Device.
 .. After clicking on [**Deploy**] from previous step, Pop up appears and select the device to which it needs to be deployed and click [**Deploy**].
 +
-image::aitrios_imgs/deploy_wasm/step1.png[]
+image::aitrios_imgs/deploy_edgeapp/step1.png[]
 
 .. Go to "**Manage Device**" from sidebar, select the device to which Edge App was deployed and go to "**Status**", "**Application**" and check if the "**App Name**" has the deployed Edge App file name from previous step.
 +
-image::aitrios_imgs/deploy_wasm/step2.png[]
+image::aitrios_imgs/deploy_edgeapp/step2.png[]
 
 
 * Bind Command Parameter File.
@@ -112,7 +113,7 @@ image::aitrios_imgs/deploy_wasm/step2.png[]
   ]
 }
 ----
-_**Note:**_ Please contact AI model provider for latest command parameter file.
+_**Note:**_ Please contact AI model provider for latest command parameter file. If the values of Mode, NumberOfImages, NumberOfInferencesPerMessage or UploadInterval in the obtained command parameters differ from those listed in this document, please use the values specified in this document.
 
 .. Click [**import**] and upload the `command parameter` file.
 +

@@ -19,30 +19,6 @@ repos:
         exclude: ^(.vscode/|build/|dist/|docs/|edgeapp.egg-info/)
         types: ["python"]
 
-  - repo: https://github.com/pycqa/pylint
-    rev: v2.15.2
-    hooks:
-      - id: pylint
-        args:
-          [
-            "src/backend",
-            "--max-line-length",
-            "100",
-            "--rc-file",
-            ".pylintrc",
-            "--output-format",
-            "msvs",
-          ]
-        exclude: ^(.vscode/|build/|dist/|docs/|edgeapp.egg-info/)
-        types: ["python"]
-        additional_dependencies: [
-            # To read values from enviromnet files
-            python-dotenv==0.18.0,
-            Flask==3.0.0,
-            Flask-PyMongo==2.3.0,
-            pandas==2.0.3,
-          ]
-
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
